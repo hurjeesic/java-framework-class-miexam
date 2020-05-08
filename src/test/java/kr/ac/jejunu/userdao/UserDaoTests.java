@@ -15,8 +15,10 @@ public class UserDaoTests {
     @Test
     public void testGet() throws SQLException, ClassNotFoundException {
         Integer id = 1;
-        ConnectionMaker connectionMaker = new JejuConnectionMaker();
-        UserDao userDao = new UserDao(connectionMaker);
+//        ConnectionMaker connectionMaker = new JejuConnectionMaker();
+//        UserDao userDao = new UserDao(connectionMaker);
+        DaoFactory daoFactory = new DaoFactory();
+        UserDao userDao = daoFactory.getUserDao();
         User user = userDao.get(id);
         assertThat(user.getId(), is(id));
         assertThat(user.getName(), is(name));
@@ -29,35 +31,10 @@ public class UserDaoTests {
         user.setName(name);
         user.setPassword(password);
 
-        ConnectionMaker connectionMaker = new JejuConnectionMaker();
-        UserDao userDao = new UserDao(connectionMaker);
-        userDao.insert(user);
-        assertThat(user.getId(), greaterThan(0));
-
-        User insertedUser = userDao.get(user.getId());
-        assertThat(user.getName(), is(insertedUser.getName()));
-        assertThat(user.getPassword(), is(insertedUser.getPassword()));
-    }
-
-    @Test
-    public void testGetHalla() throws SQLException, ClassNotFoundException {
-        Integer id = 1;
-        ConnectionMaker connectionMaker = new HallaConnectionMaker();
-        UserDao userDao = new UserDao(connectionMaker);
-        User user = userDao.get(id);
-        assertThat(user.getId(), is(id));
-        assertThat(user.getName(), is(name));
-        assertThat(user.getPassword(), is(password));
-    }
-
-    @Test
-    public void testInsertHalla() throws SQLException, ClassNotFoundException {
-        User user = new User();
-        user.setName(name);
-        user.setPassword(password);
-
-        ConnectionMaker connectionMaker = new HallaConnectionMaker();
-        UserDao userDao = new UserDao(connectionMaker);
+//        ConnectionMaker connectionMaker = new JejuConnectionMaker();
+//        UserDao userDao = new UserDao(connectionMaker);
+        DaoFactory daoFactory = new DaoFactory();
+        UserDao userDao = daoFactory.getUserDao();
         userDao.insert(user);
         assertThat(user.getId(), greaterThan(0));
 
