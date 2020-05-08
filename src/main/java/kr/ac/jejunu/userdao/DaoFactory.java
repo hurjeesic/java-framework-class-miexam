@@ -2,11 +2,13 @@ package kr.ac.jejunu.userdao;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
 import javax.sql.DataSource;
 import java.sql.Driver;
 
+@Configuration
 public class DaoFactory {
     @Value("${db.classname}")
     private String className;
@@ -19,11 +21,16 @@ public class DaoFactory {
 
     @Bean
     public UserDao userDao() {
-        return new UserDao(datasource());
+        return new UserDao(jdbcContext());
     }
 
     @Bean
-    private DataSource datasource() {
+    public JdbcContext jdbcContext() {
+        return new JdbcContext(datasource());
+    }
+
+    @Bean
+    public DataSource datasource() {
         SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
 
         try {
