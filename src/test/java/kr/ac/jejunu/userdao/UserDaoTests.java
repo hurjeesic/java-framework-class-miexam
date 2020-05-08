@@ -1,5 +1,6 @@
 package kr.ac.jejunu.userdao;
 
+import org.hamcrest.core.IsNull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
@@ -44,5 +45,39 @@ public class UserDaoTests {
         User insertedUser = userDao.get(user.getId());
         assertThat(user.getName(), is(insertedUser.getName()));
         assertThat(user.getPassword(), is(insertedUser.getPassword()));
+    }
+
+    @Test
+    public void testUpdate() {
+        User user = new User();
+        user.setName(name);
+        user.setPassword(password);
+        userDao.insert(user);
+
+        String updatedName = "jimen";
+        String updatedPassword = "1111";
+
+        user.setName(updatedName);
+        user.setPassword(updatedPassword);
+
+        userDao.update(user);
+
+        User updatedUser = userDao.get(user.getId());
+        assertThat(updatedUser.getName(), is(updatedName));
+        assertThat(updatedUser.getPassword(), is(updatedPassword));
+    }
+
+    @Test
+    public void testDelete() {
+        User user = new User();
+        user.setName(name);
+        user.setPassword(password);
+        userDao.insert(user);
+
+        userDao.delete(user.getId());
+
+        User deletedUser = userDao.get(user.getId());
+
+        assertThat(deletedUser, IsNull.nullValue());
     }
 }
